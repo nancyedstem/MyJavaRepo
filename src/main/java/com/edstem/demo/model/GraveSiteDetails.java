@@ -18,6 +18,5 @@ public class GraveSiteDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="grave_id")
-    @JsonIgnore
-    private long grave_id;
+    private long graveId;
 }
