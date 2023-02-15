@@ -54,7 +54,7 @@ public class OwnerDetails {
     @Column(name="memo")
     private String memo;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "grave_id",nullable = false, referencedColumnName = "grave_id")
     private GraveSiteDetails graveSiteDetails;
 

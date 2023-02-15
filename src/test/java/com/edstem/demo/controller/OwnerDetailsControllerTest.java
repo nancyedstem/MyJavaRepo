@@ -41,6 +41,7 @@ public class OwnerDetailsControllerTest {
     public void setup() {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
     }
+
     @SneakyThrows
     @Test
     void testSaveGraveSite_Success() {
