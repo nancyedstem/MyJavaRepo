@@ -24,6 +24,7 @@ public class GraveDetailsController {
     private GraveDetailsRepository graveDetailsRepository;
     @PostMapping("/save")
     public ResponseEntity<Response> saveGraveDetails(@Valid @RequestBody GraveSiteDetails graveDetails){
+
         graveDetailsRepository.save(graveDetails);
         return new ResponseEntity<>(Response.builder().success(true).message(String.valueOf(graveDetails.getGrave_id())).build(), HttpStatus.OK);
     }

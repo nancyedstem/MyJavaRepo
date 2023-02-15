@@ -61,17 +61,16 @@ public class OwnerDetailsControllerTest {
         // Given
         GraveSiteDetails graveSiteDetails=GraveSiteDetails.builder().grave_id(1).build();
 
-
-        OwnerDetails request = OwnerDetails.builder().city("Trivandrum").graveSiteDetails(graveSiteDetails)
+         graveDetailsRepository.save(graveSiteDetails);
+        OwnerDetails request = OwnerDetails.builder().city("Trivandrum").graveId(1)
                         .emailId("satheesh@gmail.com")
                         .firstLineAddress("sathesh street")
                         .firstName("Satheesh")
-                        .id(101)
                         .lastName("moham")
                         .memo("This is a graveyard in Trivandrum")
                         .secLineAddress("trivandrum")
                         .state("Kerala")
-                        .zip("345678").build();
+                        .zip(345678).build();
 
     String requestJson = mapToString(request);
     // When

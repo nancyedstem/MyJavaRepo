@@ -1,6 +1,7 @@
 package com.edstem.demo.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,6 +19,7 @@ public class OwnerDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="id")
+    @JsonIgnore
     private long id;
     @Column(name="firstName")
     private String firstName;
@@ -34,10 +36,9 @@ public class OwnerDetails {
     @Column(name="state")
     private String state;
     @Column(name="zip")
-    private String zip;
+    private int zip;
     @Column(name="memo")
     private String memo;
-    @OneToOne
     @JoinColumn(name = "grave_id", nullable = false)
-    private GraveSiteDetails graveSiteDetails;
+    private long graveId;
 }
