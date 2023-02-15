@@ -2,9 +2,7 @@ package com.edstem.demo.controller;
 
 import com.edstem.demo.dto.CreateOwnerRequest;
 import com.edstem.demo.model.GraveSiteDetails;
-import com.edstem.demo.model.OwnerDetails;
 import com.edstem.demo.repository.GraveDetailsRepository;
-import com.edstem.demo.repository.OwnerDetailsRepository;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import lombok.SneakyThrows;
@@ -32,16 +30,41 @@ public class OwnerDetailsControllerTest {
     private MockMvc mockMvc;
     @Autowired
     private WebApplicationContext wac;
-
     @Autowired
     GraveDetailsRepository graveDetailsRepository;
-    @Autowired
-    OwnerDetailsRepository ownerDetailsRepository;
     @BeforeEach
     public void setup() {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
     }
+    @SneakyThrows
+    @Test
+    void testSaveOwner_Success() {
+        // Given
+        GraveSiteDetails graveSiteDetails =graveDetailsRepository.save(GraveSiteDetails.builder().graveId(1L).build());
 
+        CreateOwnerRequest request = CreateOwnerRequest.builder()
+                .city("Trivandrum")
+                .graveId(graveSiteDetails.getGraveId())
+                .emailId("satheesh@gmail.com")
+                .firstLineAddress("sathesh street")
+                .firstName("Satheesh")
+                .lastName("moham")
+                .memo("This is a graveyard in Trivandrum")
+                .secLineAddress("trivandrum")
+                .state("Kerala")
+                .zip(345678).build();
+
+        String requestJson = mapToString(request);
+        // When
+        mockMvc.perform(post("/api/owner/save")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestJson))
+               .andDo(MockMvcResultHandlers.print())
+                // Then
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.success", is(true)));
+    }
     @SneakyThrows
     @Test
     void testSaveGraveSite_Success() {

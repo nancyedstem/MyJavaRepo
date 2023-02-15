@@ -38,16 +38,75 @@ public class OwnerDetailsServiceTest {
     @Mock
     OwnerDetailsRepository ownerDetailsRepository;
     private OwnerDetailsService ownerDetailsService;
-private OwnerDetails owner;
+
     @BeforeEach
     void init() {
         ownerDetailsService =
                 new OwnerDetailsService(
                         mockConfigMapper,ownerDetailsRepository,
                         graveDetailsRepository
-                        );
+                );
     }
+    @SneakyThrows
+    @Test
+    @DisplayName("createEmployee success")
+    void testCreateEmployee_Success() {
+        // Given
 
+        GraveSiteDetails graveSiteDetails =GraveSiteDetails.builder().graveId(100).build();
+        // When
+
+        CreateOwnerRequest request = CreateOwnerRequest.builder()
+
+                .city("Trivandrum")
+                .graveId(graveSiteDetails.getGraveId())
+                .emailId("satheesh@gmail.com")
+                .firstLineAddress("sathesh street")
+                .firstName("Satheesh")
+                .lastName("moham")
+                .memo("This is a graveyard in Trivandrum")
+                .secLineAddress("trivandrum")
+                .state("Kerala")
+                .zip(345678).build();
+        OwnerDetails details= OwnerDetails.builder()
+                .id(100L).city(request.getCity())
+                .emailId(request.getEmailId())
+                .firstLineAddress(request.getFirstLineAddress())
+                .firstName(request.getFirstName())
+                .lastName(request.getLastName())
+                .memo(request.getMemo())
+                .secLineAddress(request.getSecLineAddress())
+                .state(request.getState())
+                .zip(request.getZip()).build();
+        when(graveDetailsRepository.findById(any())).thenReturn(Optional.of(graveSiteDetails));
+        when(ownerDetailsRepository.save(any())).thenReturn(details);
+
+        ownerDetailsService.createOwner(request);
+        OwnerDetails expected=OwnerDetails.builder()
+                .id(1L)
+                .graveSiteDetails(GraveSiteDetails.builder().graveId(request.getGraveId()).build())
+                .city(request.getCity())
+                .graveSiteDetails(graveSiteDetails)
+                .emailId(request.getEmailId())
+                .firstLineAddress(request.getFirstLineAddress())
+                .firstName(request.getFirstName())
+                .lastName(request.getLastName())
+                .memo(request.getMemo())
+                .secLineAddress(request.getSecLineAddress())
+                .state(request.getState())
+                .zip(request.getZip()).build();
+        ArgumentCaptor<OwnerDetails> ownerDetailsArgumentCaptor = ArgumentCaptor.forClass(OwnerDetails.class);
+        verify(ownerDetailsRepository).save(ownerDetailsArgumentCaptor.capture());
+        assertThat(
+                ownerDetailsArgumentCaptor.getValue(),
+                allOf(
+                        hasProperty("firstName", equalTo(request.getFirstName())),
+                        hasProperty("lastName", equalTo(expected.getLastName())),
+                        hasProperty("firstLineAddress", equalTo(expected.getFirstLineAddress())),
+                        hasProperty("memo", equalTo(expected.getMemo())),
+                        hasProperty("state", equalTo(expected.getState()))));
+
+    }
     @Test
     @DisplayName("createOwner failure")
     void testCreateOwner_Failure() {

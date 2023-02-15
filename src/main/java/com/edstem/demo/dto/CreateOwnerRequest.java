@@ -56,7 +56,8 @@ public class CreateOwnerRequest {
 
     @ApiModelProperty(notes = "Memo of owner")
     private String memo;
-@NotNull
-@ApiModelProperty(notes = "grave id")
+
+   @NotNull
+   @ApiModelProperty(notes = "grave id")
     private Long graveId;
 }
