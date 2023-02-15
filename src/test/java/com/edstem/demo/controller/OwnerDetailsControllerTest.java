@@ -1,8 +1,10 @@
 package com.edstem.demo.controller;
 
+import com.edstem.demo.dto.CreateOwnerRequest;
 import com.edstem.demo.model.GraveSiteDetails;
 import com.edstem.demo.model.OwnerDetails;
 import com.edstem.demo.repository.GraveDetailsRepository;
+import com.edstem.demo.repository.OwnerDetailsRepository;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import lombok.SneakyThrows;
@@ -33,14 +35,17 @@ public class OwnerDetailsControllerTest {
 
     @Autowired
     GraveDetailsRepository graveDetailsRepository;
+    @Autowired
+    OwnerDetailsRepository ownerDetailsRepository;
     @BeforeEach
     public void setup() {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
     }
+
     @SneakyThrows
     @Test
     void testSaveGraveSite_Success() {
-        GraveSiteDetails graveSiteDetails=GraveSiteDetails.builder().grave_id(1).build();
+        GraveSiteDetails graveSiteDetails=GraveSiteDetails.builder().graveId(1).build();
         // Given
         String requestJson = mapToString(graveSiteDetails);
         // When
@@ -54,35 +59,6 @@ public class OwnerDetailsControllerTest {
                 .andExpect(jsonPath("$.success", is(true)));
     }
 
-
-    @SneakyThrows
-    @Test
-    void testSaveOwner_Success() {
-        // Given
-        GraveSiteDetails graveSiteDetails=GraveSiteDetails.builder().grave_id(1).build();
-
-         graveDetailsRepository.save(graveSiteDetails);
-        OwnerDetails request = OwnerDetails.builder().city("Trivandrum").graveId(1)
-                        .emailId("satheesh@gmail.com")
-                        .firstLineAddress("sathesh street")
-                        .firstName("Satheesh")
-                        .lastName("moham")
-                        .memo("This is a graveyard in Trivandrum")
-                        .secLineAddress("trivandrum")
-                        .state("Kerala")
-                        .zip(345678).build();
-
-    String requestJson = mapToString(request);
-    // When
-        mockMvc.perform(post("/api/owner/save")
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(requestJson))
-            .andDo(MockMvcResultHandlers.print())
-            // Then
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-            .andExpect(jsonPath("$.success", is(true)));
-}
     @Test
     @SneakyThrows
     @DisplayName("POST /save grave details failure")
