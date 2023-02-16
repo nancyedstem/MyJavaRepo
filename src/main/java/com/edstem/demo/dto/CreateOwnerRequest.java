@@ -3,15 +3,12 @@ package com.edstem.demo.dto;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Builder;
-import lombok.Getter;
-
-
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
-
+import lombok.Builder;
+import lombok.Getter;
 
 @Getter
 @Builder
@@ -28,8 +25,8 @@ public class CreateOwnerRequest {
     private final String lastName;
 
     @NotEmpty
-    @Email(message="Please provide a valid email address")
-    @Pattern(regexp=".+@.+\\..+", message="Please provide a valid email address")
+    @Email(message = "Please provide a valid email address")
+    @Pattern(regexp = ".+@.+\\..+", message = "Please provide a valid email address")
     @ApiModelProperty(notes = "Email of owner is mandatory")
     private String emailId;
 
@@ -57,7 +54,7 @@ public class CreateOwnerRequest {
     @ApiModelProperty(notes = "Memo of owner")
     private String memo;
 
-   @NotNull
-   @ApiModelProperty(notes = "grave id")
+    @NotNull
+    @ApiModelProperty(notes = "grave id")
     private Long graveId;
 }

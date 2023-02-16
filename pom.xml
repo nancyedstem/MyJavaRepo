@@ -99,7 +99,7 @@
 						</importOrder>
 						<removeUnusedImports/>
 						<googleJavaFormat>
-							<version>11</version>
+							<version>1.8</version>
 							<style>AOSP</style>
 						</googleJavaFormat>
 					</java>
