@@ -1,8 +1,9 @@
 package com.edstem.demo.controller;
 
+import com.edstem.demo.dto.CreateGraveSiteRequest;
 import com.edstem.demo.dto.Response;
 import com.edstem.demo.model.GraveSiteDetails;
-import com.edstem.demo.repository.GraveDetailsRepository;
+import com.edstem.demo.service.GraveSiteDetailsService;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,17 +18,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(value = "/api/grave", produces = "application/json")
 public class GraveDetailsController {
-    @Autowired private GraveDetailsRepository graveDetailsRepository;
+    @Autowired private GraveSiteDetailsService graveDetailsService;
 
     @PostMapping("/save")
     public ResponseEntity<Response> saveGraveDetails(
-            @Valid @RequestBody GraveSiteDetails graveDetails) {
+            @Valid @RequestBody CreateGraveSiteRequest graveDetails) {
 
-        graveDetailsRepository.save(graveDetails);
+        GraveSiteDetails graveSiteDetails = graveDetailsService.createGraveSite(graveDetails);
         return new ResponseEntity<>(
                 Response.builder()
                         .success(true)
-                        .message(String.valueOf(graveDetails.getGraveId()))
+                        .message(String.valueOf(graveSiteDetails.getGraveId()))
                         .build(),
                 HttpStatus.OK);
     }
